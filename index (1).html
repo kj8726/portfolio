@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kunal Jadhav — Software Engineer</title>
+<meta name="description" content="Kunal Jadhav — Full-stack developer. LabourLink, HardwareHub, Stockroom.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0B0E14;
+    --bg-panel: #10141F;
+    --bg-panel-hover: #141925;
+    --border: #1F2633;
+    --border-hover: #2A3344;
+    --text: #E8E6DF;
+    --text-dim: #8B93A7;
+    --text-faint: #545E72;
+    --accent: #5EEAD4;
+    --accent-dim: #2C7A6E;
+    --amber: #F59E0B;
+    --red: #F87171;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Inter', sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--accent-dim);color:#fff;}
+
+  a{color:inherit;text-decoration:none;}
+  .wrap{max-width:920px;margin:0 auto;padding:0 24px;}
+
+  /* subtle grid texture */
+  .bg-grid{
+    position:fixed;inset:0;z-index:0;pointer-events:none;
+    background-image:
+      linear-gradient(to right, rgba(255,255,255,0.02) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size:48px 48px;
+    mask-image:radial-gradient(ellipse 80% 50% at 50% 0%, #000 40%, transparent 100%);
+  }
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:sticky;top:0;z-index:50;
+    background:rgba(11,14,20,0.85);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+  }
+  nav .wrap{
+    display:flex;align-items:center;justify-content:space-between;
+    height:60px;
+  }
+  .logo{
+    font-family:var(--mono);font-weight:700;font-size:15px;
+    color:var(--text);display:flex;align-items:center;gap:8px;
+  }
+  .logo .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);
+    box-shadow:0 0 8px var(--accent); animation:blink 2s ease-in-out infinite;}
+  @keyframes blink{0%,100%{opacity:1;}50%{opacity:0.3;}}
+  .nav-links{display:flex;gap:28px;font-family:var(--mono);font-size:13px;color:var(--text-dim);}
+  .nav-links a{transition:color .15s;}
+  .nav-links a:hover{color:var(--accent);}
+  .nav-cta{
+    font-family:var(--mono);font-size:12px;font-weight:600;
+    color:var(--bg);background:var(--accent);
+    padding:8px 14px;border-radius:4px;
+    transition:opacity .15s;
+  }
+  .nav-cta:hover{opacity:0.85;}
+  .nav-mobile-hide{display:flex;}
+  @media (max-width:640px){.nav-mobile-hide{display:none;}}
+
+  /* ---------- HERO ---------- */
+  header.hero{
+    position:relative;z-index:1;
+    padding:100px 0 80px;
+  }
+  .eyebrow{
+    font-family:var(--mono);font-size:13px;color:var(--accent);
+    display:flex;align-items:center;gap:10px;margin-bottom:24px;
+    letter-spacing:0.02em;
+  }
+  .eyebrow::before{content:'$';color:var(--text-faint);}
+  .cursor{
+    display:inline-block;width:8px;height:16px;background:var(--accent);
+    animation:blink 1s step-end infinite;vertical-align:middle;
+  }
+  h1{
+    font-family:var(--mono);font-weight:800;
+    font-size:clamp(32px, 5.5vw, 56px);
+    line-height:1.08;letter-spacing:-0.02em;
+    margin-bottom:20px;
+  }
+  h1 .accent{color:var(--accent);}
+  .hero-sub{
+    font-size:18px;color:var(--text-dim);max-width:600px;margin-bottom:36px;
+    font-weight:400;
+  }
+  .hero-sub strong{color:var(--text);font-weight:600;}
+  .hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:56px;}
+  .btn{
+    font-family:var(--mono);font-size:14px;font-weight:600;
+    padding:12px 22px;border-radius:6px;
+    display:inline-flex;align-items:center;gap:8px;
+    transition:all .15s;border:1px solid transparent;
+  }
+  .btn-primary{background:var(--accent);color:#06110F;}
+  .btn-primary:hover{background:#7FF3E0;transform:translateY(-1px);}
+  .btn-secondary{border-color:var(--border-hover);color:var(--text);}
+  .btn-secondary:hover{border-color:var(--accent);color:var(--accent);}
+
+  /* stat strip */
+  .stats{
+    display:grid;grid-template-columns:repeat(4,1fr);
+    border:1px solid var(--border);border-radius:8px;overflow:hidden;
+  }
+  .stat{padding:18px 16px;border-right:1px solid var(--border);}
+  .stat:last-child{border-right:none;}
+  .stat-num{font-family:var(--mono);font-size:22px;font-weight:700;color:var(--accent);}
+  .stat-label{font-size:12px;color:var(--text-faint);margin-top:2px;}
+  @media (max-width:640px){
+    .stats{grid-template-columns:repeat(2,1fr);}
+    .stat:nth-child(2){border-right:none;}
+    .stat{border-bottom:1px solid var(--border);}
+  }
+
+  /* ---------- SECTION HEADER ---------- */
+  .section{position:relative;z-index:1;padding:64px 0;border-top:1px solid var(--border);}
+  .section-head{display:flex;align-items:baseline;gap:12px;margin-bottom:40px;}
+  .section-num{font-family:var(--mono);color:var(--text-faint);font-size:14px;}
+  .section-title{font-family:var(--mono);font-size:22px;font-weight:700;}
+  .section-desc{color:var(--text-dim);font-size:15px;margin-bottom:40px;margin-top:-24px;max-width:560px;}
+
+  /* ---------- PROJECTS (changelog cards) ---------- */
+  .project{
+    background:var(--bg-panel);
+    border:1px solid var(--border);
+    border-radius:10px;
+    margin-bottom:24px;
+    overflow:hidden;
+    transition:border-color .2s;
+  }
+  .project:hover{border-color:var(--border-hover);}
+  .project-head{
+    padding:22px 26px;
+    display:flex;justify-content:space-between;align-items:flex-start;
+    gap:16px;flex-wrap:wrap;
+    border-bottom:1px solid var(--border);
+  }
+  .project-title-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  .project-title{font-family:var(--mono);font-weight:700;font-size:19px;}
+  .project-status{
+    font-family:var(--mono);font-size:10.5px;font-weight:600;
+    padding:3px 8px;border-radius:20px;
+    background:rgba(94,234,212,0.1);color:var(--accent);
+    border:1px solid rgba(94,234,212,0.25);
+    text-transform:uppercase;letter-spacing:0.04em;
+  }
+  .project-tagline{color:var(--text-dim);font-size:14.5px;margin-top:8px;max-width:520px;}
+  .project-links{display:flex;gap:10px;flex-shrink:0;}
+  .icon-link{
+    font-family:var(--mono);font-size:12.5px;font-weight:600;
+    padding:8px 13px;border-radius:6px;border:1px solid var(--border-hover);
+    color:var(--text-dim);white-space:nowrap;
+    transition:all .15s;
+  }
+  .icon-link:hover{color:var(--accent);border-color:var(--accent);}
+  .icon-link.primary{background:var(--accent);color:#06110F;border-color:var(--accent);}
+  .icon-link.primary:hover{background:#7FF3E0;}
+
+  .project-body{padding:22px 26px;}
+  .stack-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;}
+  .stack-chip{
+    font-family:var(--mono);font-size:11.5px;color:var(--text-dim);
+    background:rgba(255,255,255,0.03);border:1px solid var(--border);
+    padding:4px 10px;border-radius:4px;
+  }
+
+  .log-label{
+    font-family:var(--mono);font-size:11px;color:var(--text-faint);
+    text-transform:uppercase;letter-spacing:0.06em;margin-bottom:10px;
+  }
+  .log-entry{
+    display:flex;gap:10px;padding:7px 0;font-size:13.5px;
+    font-family:var(--mono);color:var(--text-dim);
+    border-bottom:1px dashed rgba(255,255,255,0.04);
+  }
+  .log-entry:last-child{border-bottom:none;}
+  .log-tag{color:var(--red);flex-shrink:0;}
+  .log-arrow{color:var(--text-faint);flex-shrink:0;}
+  .log-fix{color:var(--accent);}
+  .log-desc{color:var(--text-dim);}
+
+  /* ---------- STOCKROOM (secondary style, SQL flavored) ---------- */
+  .sql-block{
+    background:#080A10;border:1px solid var(--border);
+    border-radius:6px;padding:16px 18px;margin-top:18px;
+    font-family:var(--mono);font-size:12.5px;color:var(--text-dim);
+    overflow-x:auto;
+  }
+  .sql-block .kw{color:#C792EA;}
+  .sql-block .fn{color:var(--accent);}
+  .sql-block .cm{color:var(--text-faint);}
+
+  /* ---------- SKILLS ---------- */
+  .skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;}
+  .skill-cat{background:var(--bg-panel);border:1px solid var(--border);border-radius:8px;padding:20px;}
+  .skill-cat-title{font-family:var(--mono);font-size:13px;color:var(--accent);margin-bottom:14px;font-weight:600;}
+  .skill-list{display:flex;flex-wrap:wrap;gap:7px;}
+  .skill-item{
+    font-family:var(--mono);font-size:12px;color:var(--text-dim);
+    background:rgba(255,255,255,0.03);padding:5px 10px;border-radius:4px;
+    border:1px solid var(--border);
+  }
+
+  /* ---------- ABOUT / TIMELINE ---------- */
+  .about-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:48px;align-items:start;}
+  @media (max-width:760px){.about-grid{grid-template-columns:1fr;}}
+  .about-text p{color:var(--text-dim);font-size:15px;margin-bottom:16px;}
+  .about-text strong{color:var(--text);}
+  .timeline-item{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--border);}
+  .timeline-item:last-child{border-bottom:none;}
+  .timeline-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);margin-top:6px;flex-shrink:0;}
+  .timeline-year{font-family:var(--mono);font-size:11.5px;color:var(--text-faint);}
+  .timeline-title{font-size:14.5px;color:var(--text);font-weight:600;margin-top:2px;}
+  .timeline-sub{font-size:13px;color:var(--text-dim);margin-top:2px;}
+
+  /* ---------- CONTACT ---------- */
+  .contact-panel{
+    background:var(--bg-panel);border:1px solid var(--border);border-radius:12px;
+    padding:48px;text-align:center;
+  }
+  .contact-panel h2{font-family:var(--mono);font-size:26px;margin-bottom:14px;}
+  .contact-panel p{color:var(--text-dim);margin-bottom:28px;font-size:15px;}
+  .contact-links{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+
+  footer{
+    text-align:center;padding:36px 24px;color:var(--text-faint);
+    font-family:var(--mono);font-size:12px;border-top:1px solid var(--border);
+    position:relative;z-index:1;
+  }
+
+  /* reveal on scroll */
+  .reveal{opacity:0;transform:translateY(14px);transition:opacity .6s ease, transform .6s ease;}
+  .reveal.in{opacity:1;transform:none;}
+
+  @media (prefers-reduced-motion: reduce){
+    .cursor,.logo .dot{animation:none;}
+    .reveal{opacity:1;transform:none;transition:none;}
+    html{scroll-behavior:auto;}
+  }
+
+  :focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:2px;}
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+
+<nav>
+  <div class="wrap">
+    <div class="logo"><span class="dot"></span>kunal@dev</div>
+    <div class="nav-links nav-mobile-hide">
+      <a href="#work">work</a>
+      <a href="#skills">skills</a>
+      <a href="#about">about</a>
+      <a href="#contact">contact</a>
+    </div>
+    <a href="resume.pdf" download class="nav-cta" id="nav-resume-btn">resume.pdf</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">whoami<span class="cursor"></span></div>
+    <h1>Kunal Jadhav<br>builds full-stack apps<br>that survive <span class="accent">production.</span></h1>
+    <p class="hero-sub">
+      Final-year Computer Engineering student who'd rather debug a real <strong>FUNCTION_INVOCATION_FAILED</strong> on Vercel at 1am than build another tutorial CRUD app. MERN stack, raw SQL, and enough DevOps to know where things break.
+    </p>
+    <div class="hero-actions">
+      <a href="#work" class="btn btn-primary">See the work ↓</a>
+      <a href="mailto:Kunal.jadhav8726@gmail.com" class="btn btn-secondary">Get in touch</a>
+    </div>
+    <div class="stats reveal">
+      <div class="stat"><div class="stat-num">3</div><div class="stat-label">shipped projects</div></div>
+      <div class="stat"><div class="stat-num">8.6</div><div class="stat-label">CGPA</div></div>
+      <div class="stat"><div class="stat-num">2026</div><div class="stat-label">graduating</div></div>
+      <div class="stat"><div class="stat-num">10+</div><div class="stat-label">prod bugs fixed</div></div>
+    </div>
+  </div>
+</header>
+
+<section class="section" id="work">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="section-num">01</span>
+      <span class="section-title">Selected work</span>
+    </div>
+    <p class="section-desc reveal">Three projects, three different failure modes learned the hard way. Each one is deployed and actually works — click through.</p>
+
+    <!-- LabourLink -->
+    <div class="project reveal">
+      <div class="project-head">
+        <div>
+          <div class="project-title-row">
+            <span class="project-title">LabourLink</span>
+            <span class="project-status">live</span>
+          </div>
+          <p class="project-tagline">A service-based marketplace connecting users with nearby skilled labourers — electricians, plumbers, painters, mechanics, carpenters — via location-aware search built on Leaflet Maps.</p>
+        </div>
+        <div class="project-links">
+          <a href="https://labour-link-nine.vercel.app/home" target="_blank" rel="noopener" class="icon-link primary">Live demo →</a>
+          <a href="#" target="_blank" rel="noopener" class="icon-link">GitHub</a>
+        </div>
+      </div>
+      <div class="project-body">
+        <div class="stack-row">
+          <span class="stack-chip">React</span>
+          <span class="stack-chip">Node.js</span>
+          <span class="stack-chip">Express</span>
+          <span class="stack-chip">MongoDB</span>
+          <span class="stack-chip">Leaflet Maps API</span>
+          <span class="stack-chip">Bootstrap</span>
+          <span class="stack-chip">Vercel</span>
+        </div>
+        <div class="log-label">// what it demonstrates</div>
+        <div class="log-entry"><span class="log-tag">core</span><span class="log-arrow">→</span><span class="log-desc">Location-based search via Leaflet Maps for finding nearby workers</span></div>
+        <div class="log-entry"><span class="log-tag">core</span><span class="log-arrow">→</span><span class="log-desc">Detailed labourer profiles — experience, pricing, service info, contact details</span></div>
+        <div class="log-entry"><span class="log-tag">bug</span><span class="log-arrow">→</span><span class="log-fix">fixed</span><span class="log-desc">— case-sensitive filesystem crash (Linux prod vs Windows dev)</span></div>
+        <div class="log-entry"><span class="log-tag">bug</span><span class="log-arrow">→</span><span class="log-fix">fixed</span><span class="log-desc">— session store incompatible with serverless, migrated to connect-mongo</span></div>
+      </div>
+    </div>
+
+    <!-- HardwareHub -->
+    <div class="project reveal">
+      <div class="project-head">
+        <div>
+          <div class="project-title-row">
+            <span class="project-title">HardwareHub</span>
+            <span class="project-status">live</span>
+          </div>
+          <p class="project-tagline">A full-stack hardware marketplace with role-based access for customers, shop owners, and admins — including a request-and-response quoting system for competitive offers.</p>
+        </div>
+        <div class="project-links">
+          <a href="https://hardwarehub-phi.vercel.app" target="_blank" rel="noopener" class="icon-link primary">Live demo →</a>
+          <a href="#" target="_blank" rel="noopener" class="icon-link">GitHub</a>
+        </div>
+      </div>
+      <div class="project-body">
+        <div class="stack-row">
+          <span class="stack-chip">Next.js 14</span>
+          <span class="stack-chip">NextAuth.js</span>
+          <span class="stack-chip">MongoDB</span>
+          <span class="stack-chip">Tailwind CSS</span>
+          <span class="stack-chip">Cloudinary</span>
+          <span class="stack-chip">Resend</span>
+          <span class="stack-chip">Vercel</span>
+        </div>
+        <div class="log-label">// what it demonstrates</div>
+        <div class="log-entry"><span class="log-tag">core</span><span class="log-arrow">→</span><span class="log-desc">Role-based access control for customers, shop owners, and admins</span></div>
+        <div class="log-entry"><span class="log-tag">core</span><span class="log-arrow">→</span><span class="log-desc">Request-and-response quoting flow between customers and shop owners</span></div>
+        <div class="log-entry"><span class="log-tag">core</span><span class="log-arrow">→</span><span class="log-desc">Server-side paginated, category/city-filtered search + Cloudinary uploads</span></div>
+        <div class="log-entry"><span class="log-tag">core</span><span class="log-arrow">→</span><span class="log-desc">Transactional email notifications via Resend, NextAuth.js sessions</span></div>
+      </div>
+    </div>
+
+    <!-- Stockroom -->
+    <div class="project reveal">
+      <div class="project-head">
+        <div>
+          <div class="project-title-row">
+            <span class="project-title">Stockroom</span>
+            <span class="project-status">local / sql</span>
+          </div>
+          <p class="project-tagline">An inventory & order management system built specifically to prove relational database depth — raw SQL over an ORM, on purpose, for the interview conversation it enables.</p>
+        </div>
+        <div class="project-links">
+          <a href="#" target="_blank" rel="noopener" class="icon-link">GitHub</a>
+        </div>
+      </div>
+      <div class="project-body">
+        <div class="stack-row">
+          <span class="stack-chip">Next.js 14</span>
+          <span class="stack-chip">SQL Server 2025</span>
+          <span class="stack-chip">raw mssql (no ORM)</span>
+          <span class="stack-chip">Stored Procedures</span>
+        </div>
+        <div class="log-label">// why raw SQL instead of Prisma</div>
+        <p style="color:var(--text-dim);font-size:14px;margin-bottom:16px;">Chose the `mssql` npm package over an ORM deliberately — to be able to speak fluently about transactions, isolation, and stored procedures in interviews instead of abstracting them away.</p>
+        <div class="sql-block">CREATE PROCEDURE <span class="fn">sp_PlaceOrder</span>
+  <span class="cm">-- wraps stock check + order insert + stock decrement</span>
+AS
+BEGIN
+  SET <span class="kw">XACT_ABORT</span> ON;
+  BEGIN <span class="kw">TRY</span>
+    BEGIN <span class="kw">TRANSACTION</span>;
+      <span class="cm">-- validate stock, insert order, update inventory</span>
+    COMMIT <span class="kw">TRANSACTION</span>;
+  END <span class="kw">TRY</span>
+  BEGIN <span class="kw">CATCH</span>
+    ROLLBACK <span class="kw">TRANSACTION</span>;
+    THROW;
+  END <span class="kw">CATCH</span>
+END</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="section" id="skills">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="section-num">02</span>
+      <span class="section-title">Stack</span>
+    </div>
+    <div class="skills-grid reveal">
+      <div class="skill-cat">
+        <div class="skill-cat-title">Languages</div>
+        <div class="skill-list">
+          <span class="skill-item">Java</span>
+          <span class="skill-item">JavaScript</span>
+          <span class="skill-item">SQL</span>
+          <span class="skill-item">HTML/CSS</span>
+        </div>
+      </div>
+      <div class="skill-cat">
+        <div class="skill-cat-title">Frontend</div>
+        <div class="skill-list">
+          <span class="skill-item">React</span>
+          <span class="skill-item">Next.js</span>
+          <span class="skill-item">Bootstrap</span>
+          <span class="skill-item">Tailwind CSS</span>
+        </div>
+      </div>
+      <div class="skill-cat">
+        <div class="skill-cat-title">Backend</div>
+        <div class="skill-list">
+          <span class="skill-item">Node.js</span>
+          <span class="skill-item">Express</span>
+          <span class="skill-item">NextAuth.js</span>
+          <span class="skill-item">REST APIs</span>
+        </div>
+      </div>
+      <div class="skill-cat">
+        <div class="skill-cat-title">Data</div>
+        <div class="skill-list">
+          <span class="skill-item">MongoDB</span>
+          <span class="skill-item">MySQL</span>
+          <span class="skill-item">SQL Server</span>
+        </div>
+      </div>
+      <div class="skill-cat">
+        <div class="skill-cat-title">Cloud & DevOps</div>
+        <div class="skill-list">
+          <span class="skill-item">AWS</span>
+          <span class="skill-item">Docker</span>
+          <span class="skill-item">Kubernetes</span>
+          <span class="skill-item">Vercel</span>
+        </div>
+      </div>
+      <div class="skill-cat">
+        <div class="skill-cat-title">Core CS</div>
+        <div class="skill-list">
+          <span class="skill-item">DSA</span>
+          <span class="skill-item">OOP</span>
+          <span class="skill-item">DBMS</span>
+          <span class="skill-item">Operating Systems</span>
+          <span class="skill-item">Computer Networks</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="about">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="section-num">03</span>
+      <span class="section-title">About</span>
+    </div>
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <p>I'm a final-year <strong>Computer Engineering</strong> student at SKN Sinhgad Institute of Technology and Science, Pune, graduating in 2026 with an <strong>8.6 CGPA</strong>.</p>
+        <p>Most of my learning didn't come from courses — it came from deploying real projects and watching them break in production. Debugging a case-sensitive filesystem crash that only shows up on Linux, or a session store that silently fails on serverless, teaches you things a tutorial never will.</p>
+        <p>I built <strong>Stockroom</strong> specifically to close a gap: hands-on relational database and transaction experience, using raw SQL instead of an ORM so I could actually reason about what's happening under the hood.</p>
+        <p>Currently open to <strong>fresher software engineering and full-stack developer roles</strong>, and preparing for the IBPS CRP PO/MT-XVI exam in parallel.</p>
+      </div>
+      <div class="reveal">
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div>
+            <div class="timeline-year">2026</div>
+            <div class="timeline-title">B.E. Computer Engineering</div>
+            <div class="timeline-sub">SKN Sinhgad Institute of Technology and Science, Pune · CGPA 8.6</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div>
+            <div class="timeline-year">Ongoing</div>
+            <div class="timeline-title">Job hunt — fresher SWE / MERN roles</div>
+            <div class="timeline-sub">Applications: Stripe, Eaton, Kaseya, Honeywell · Pune walk-ins</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div>
+            <div class="timeline-year">Parallel track</div>
+            <div class="timeline-title">IBPS CRP PO/MT-XVI prep</div>
+            <div class="timeline-sub">Bank PO examination</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="contact">
+  <div class="wrap">
+    <div class="contact-panel reveal">
+      <h2>Let's talk.</h2>
+      <p>Open to fresher software engineering and full-stack roles — happy to walk through any project live.</p>
+      <p style="font-family:var(--mono);font-size:13px;color:var(--text-faint);margin-top:-18px;margin-bottom:28px;">+91-8080644045 · Kunal.jadhav8726@gmail.com</p>
+      <div class="contact-links">
+        <a href="mailto:Kunal.jadhav8726@gmail.com" class="btn btn-primary">Email me</a>
+        <a href="https://github.com/kj8726" target="_blank" rel="noopener" class="btn btn-secondary">GitHub — kj8726</a>
+        <a href="https://www.linkedin.com/in/kunal-jadhav-k8726" target="_blank" rel="noopener" class="btn btn-secondary">LinkedIn</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  built by Kunal Jadhav · Pune, India · updated 2026
+</footer>
+
+<script>
+  // scroll reveal
+  const els = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+  }, {threshold:0.12});
+  els.forEach(el=>io.observe(el));
+</script>
+
+</body>
+</html>
